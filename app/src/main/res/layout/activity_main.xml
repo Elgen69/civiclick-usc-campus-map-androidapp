@@ -1,36 +1,43 @@
 <!-- Home screen with title and nav buttons -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="#121212"
+    android:background="#FFFFFF"
     android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_vertical">
 
-    <TextView
-        android:text="CiviClick"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="#2196F3"
-        android:layout_gravity="center"
-        android:paddingBottom="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/btnHome"
-        android:text="Home"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="HardcodedText" />
+        android:layout_height="80dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/logo"
+        android:layout_marginBottom="30dp"/>
 
     <Button
         android:id="@+id/btnMap"
-        android:text="Map"
+        android:text="USC Map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        tools:ignore="HardcodedText"
+        android:layout_marginBottom="5dp"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/btnAbout"-->
+<!--        android:text="About us"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        tools:ignore="HardcodedText"-->
+<!--        android:layout_marginBottom="5dp"/>-->
+
+    <Button
+        android:id="@+id/btnCredits"
+        android:text="Credits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         tools:ignore="HardcodedText" />
 </LinearLayout>
