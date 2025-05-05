@@ -1,43 +1,54 @@
 <!-- Home screen with title and nav buttons -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:background="#FFFFFF"
-    android:padding="24dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical">
+    android:background="#FFFFFF"
+    android:padding="24dp">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginBottom="30dp"
         android:scaleType="centerInside"
-        app:srcCompat="@drawable/logo"
-        android:layout_marginBottom="30dp"/>
+        app:layout_constraintBottom_toTopOf="@id/btnMap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/logo" />
 
     <Button
         android:id="@+id/btnMap"
-        android:text="USC Map"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="HardcodedText"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp"
+        android:text="USC Map"
+        app:layout_constraintBottom_toTopOf="@id/btnCredits"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        tools:ignore="HardcodedText" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btnAbout"-->
-<!--        android:text="About us"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        tools:ignore="HardcodedText"-->
-<!--        android:layout_marginBottom="5dp"/>-->
+    <!--    <Button-->
+    <!--        android:id="@+id/btnAbout"-->
+    <!--        android:text="About us"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        tools:ignore="HardcodedText"-->
+    <!--        android:layout_marginBottom="5dp"/>-->
 
     <Button
         android:id="@+id/btnCredits"
-        android:text="Credits"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Credits"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnMap"
         tools:ignore="HardcodedText" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
