@@ -35,9 +35,9 @@ public class BunzelBuildingActivity extends AppCompatActivity {
         // Group the buttons for easy hiding/showing
         floorButtons = new Button[]{floor1, floor2, floor3, floor4};
 
-        floor1.setOnClickListener(v -> showFloor("1", R.drawable.bunzel_floor4));
-        floor2.setOnClickListener(v -> showFloor("2", R.drawable.bunzel_floor4));
-        floor3.setOnClickListener(v -> showFloor("3", R.drawable.bunzel_floor4));
+        floor1.setOnClickListener(v -> showFloor("1", R.drawable.bunzel_floor1));
+        floor2.setOnClickListener(v -> showFloor("2", R.drawable.bunzel_floor2));
+        floor3.setOnClickListener(v -> showFloor("3", R.drawable.bunzel_floor3));
         floor4.setOnClickListener(v -> showFloor("4", R.drawable.bunzel_floor4));
     }
 
