@@ -1,23 +1,20 @@
-// This is the Bunzel Building screen
-// Shows an image of the building and lets users view any floor plan (1st–4th floor) in one page
-
 package com.example.civiclick;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class BunzelBuildingActivity extends AppCompatActivity {
 
-    ImageView floorPlan;
+    ImageView floorPlan, floorEntranceImage;
     TextView floorTitle;
-    Button floor1, floor2, floor3, floor4;
-    Button[] floorButtons;
-    boolean isViewingFloor = false;
+    AutoCompleteTextView floorRoomInput;
+    Button btnSearchRoom;
+    VideoView floorVideo;
+
+    String currentFloor = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,48 +22,64 @@ public class BunzelBuildingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bunzel_building);
 
         floorPlan = findViewById(R.id.floorPlan);
+        floorEntranceImage = findViewById(R.id.floorEntranceImage);
         floorTitle = findViewById(R.id.floorTitle);
+        floorRoomInput = findViewById(R.id.floorRoomInput);
+        btnSearchRoom = findViewById(R.id.btnSearchRoom);
+        floorVideo = findViewById(R.id.floorVideo);
 
-        floor1 = findViewById(R.id.floor1);
-        floor2 = findViewById(R.id.floor2);
-        floor3 = findViewById(R.id.floor3);
-        floor4 = findViewById(R.id.floor4);
+        findViewById(R.id.btnBasement).setOnClickListener(v -> loadFloor("basement", R.drawable.placeholder_img));
+        findViewById(R.id.btnFloor1).setOnClickListener(v -> loadFloor("floor1", R.drawable.placeholder_img));
+        findViewById(R.id.btnFloor2).setOnClickListener(v -> loadFloor("floor2", R.drawable.placeholder_img));
+        findViewById(R.id.btnFloor3).setOnClickListener(v -> loadFloor("floor3", R.drawable.placeholder_img));
+        findViewById(R.id.btnFloor4).setOnClickListener(v -> loadFloor("floor4", R.drawable.placeholder_img));
 
-        // Group the buttons for easy hiding/showing
-        floorButtons = new Button[]{floor1, floor2, floor3, floor4};
+        btnSearchRoom.setOnClickListener(v -> {
+            String room = floorRoomInput.getText().toString().replace(" ", "_").toLowerCase();
+            String videoName = "bunzel_" + currentFloor + "_to_" + room;
+            int videoId = getResources().getIdentifier(videoName, "raw", getPackageName());
 
-        floor1.setOnClickListener(v -> showFloor("1", R.drawable.bunzel_floor1));
-        floor2.setOnClickListener(v -> showFloor("2", R.drawable.bunzel_floor2));
-        floor3.setOnClickListener(v -> showFloor("3", R.drawable.bunzel_floor3));
-        floor4.setOnClickListener(v -> showFloor("4", R.drawable.bunzel_floor4));
-    }
-
-    private void showFloor(String floor, int resId) {
-        floorTitle.setText("Floor " + floor);
-        floorPlan.setImageResource(resId);
-
-        // Hide buttons
-        for (Button btn : floorButtons) {
-            btn.setVisibility(View.GONE);
-        }
-
-        isViewingFloor = true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isViewingFloor) {
-            // Show floor buttons again
-            for (Button btn : floorButtons) {
-                btn.setVisibility(View.VISIBLE);
+            if (videoId != 0) {
+                floorVideo.setVisibility(View.VISIBLE);
+                floorVideo.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
+                floorVideo.setOnCompletionListener(mp -> floorVideo.setVisibility(View.GONE));
+                floorVideo.start();
+            } else {
+                Toast.makeText(this, "No video found for this room.", Toast.LENGTH_SHORT).show();
             }
+        });
+    }
 
-            floorPlan.setImageDrawable(null);
-            floorTitle.setText("Select a floor");
-            isViewingFloor = false;
-        } else {
-            // Exit activity normally
-            super.onBackPressed();
+    private void loadFloor(String floorKey, int floorImgRes) {
+        currentFloor = floorKey;
+        floorPlan.setImageResource(floorImgRes);
+        floorTitle.setText("Selected: " + capitalize(floorKey));
+        floorEntranceImage.setImageResource(R.drawable.bunzel_entrance); // or change based on floor
+
+        String[] floorRooms = getRoomsForFloor(floorKey);
+        ArrayAdapter<String> roomAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, floorRooms);
+        floorRoomInput.setAdapter(roomAdapter);
+        floorRoomInput.setText("");
+    }
+
+    private String capitalize(String key) {
+        return key.replace("_", " ").toUpperCase();
+    }
+
+    private String[] getRoomsForFloor(String floorKey) {
+        switch (floorKey) {
+            case "floor4":
+                return new String[]{"LB 443", "LB 444", "LB 445", "LB 446", "LB 447", "LB 448", "LB 467", "LB 468", "LB 469", "LB 470", "LB 480", "LB 481", "LB 482", "LB 483", "LB 484", "LB 485", "LB 486", "Fac Office", "Dept Office", "Control room"};
+            case "floor3":
+                return new String[]{"LB 301", "LB 302", "LB 303", "LB 304", "LB 305", "LB 306", "LB 363", "LB 364", "LB 365", "LB 366", "EE Lab", "Water Laboratory", "D. ENG Room", "Tech Hub Office"};
+            case "floor2":
+                return new String[]{"LB 264", "LB 265", "LB 266", "LB 267", "LB 245", "LB 246", "LB 247", "LB 248", "CPE Dept Office", "CEACTC Office"};
+            case "floor1":
+                return new String[]{"LB 143", "LB 144", "LB 146", "LB 167", "LB 168", "LB 172", "Cashier", "Internal Audit", "Rigney Hall", "Controller Office"};
+            case "basement":
+                return new String[]{"OSFA", "CDC Office", "CDC Testing", "Medical Clinic", "Dental Clinic", "Textbook Section", "CR", "ID Room", "OSS"};
+            default:
+                return new String[]{};
         }
     }
 }

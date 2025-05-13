@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">CiviClick</string>
+    <string name="bunzel_entrance_desc">Entrance of Bunzel Building</string>
+    <string name="select_a_floor">Select a floor</string>
+    <string name="floor_image_desc">Floor preview image</string>
+    <string name="floor_1">FLOOR 1</string>
+    <string name="floor_2">FLOOR 2</string>
+    <string name="floor_3">FLOOR 3</string>
+    <string name="floor_4">FLOOR 4</string>
+    <string name="btn_go">GO</string>
+    <string name="from_hint">From Building</string>
+    <string name="to_hint">To Building</string>
+    <string name="map_footer">Use pinch to zoom and drag to explore the map.\nTap on a building marker to view floor plans.</string>
+    <string name="bunzel_marker_from" />
+    <string name="bunzel_marker_to" />
+    <string name="go_text" />
+    <string name="bunzel_marker" />
+    <string name="safad_marker">Safad Marker</string>
+    <string name="lrc_marker">LRC Marker</string>
+    <string name="edgar_oehler_marker">Edgar Oehler Marker</string>
+    <string name="enrique_marker">Enrique Marker</string>
+
 </resources>

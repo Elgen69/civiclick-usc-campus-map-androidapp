@@ -13,7 +13,7 @@
 
     <!-- Custom button style -->
     <style name="NeonButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">#2196F3</item>
+        <item name="android:backgroundTint">#03DAC6</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:elevation">6dp</item>
         <item name="android:padding">12dp</item>

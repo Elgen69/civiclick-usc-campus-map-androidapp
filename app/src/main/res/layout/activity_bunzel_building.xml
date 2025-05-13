@@ -1,68 +1,120 @@
-<!-- Displays building image, floor buttons, and selected floor plan -->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#121212"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".BunzelBuildingActivity">
 
-    <ImageView
-        android:id="@+id/entranceImage"
+    <!-- Entrance Image Preview -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/bunzel_entrance" />
+        android:layout_height="200dp"
+        android:background="@drawable/rounded_box"
+        android:layout_marginBottom="12dp">
+        <ImageView
+            android:id="@+id/floorEntranceImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bunzel_entrance"
+            android:contentDescription="Entrance" />
+    </FrameLayout>
 
+    <!-- Title -->
     <TextView
         android:id="@+id/floorTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Select a floor"
-        android:textSize="18sp"
         android:textColor="#FFFFFF"
-        android:padding="12dp" />
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:paddingBottom="8dp" />
 
+    <!-- Floor Buttons -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:weightSum="5"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/btnBasement"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Basement"
+            style="@style/NeonButton" />
+
+        <Button
+            android:id="@+id/btnFloor1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Floor 1"
+            style="@style/NeonButton" />
+
+        <Button
+            android:id="@+id/btnFloor2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Floor 2"
+            style="@style/NeonButton" />
+
+        <Button
+            android:id="@+id/btnFloor3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Floor 3"
+            style="@style/NeonButton" />
+
+        <Button
+            android:id="@+id/btnFloor4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Floor 4"
+            style="@style/NeonButton" />
+    </LinearLayout>
+
+    <!-- Room search for selected floor -->
+    <AutoCompleteTextView
+        android:id="@+id/floorRoomInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select room on this floor"
+        android:background="@drawable/rounded_box"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AAAAAA"
+        android:padding="12dp"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnSearchRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        style="@style/NeonButton" />
+
+    <!-- Floor image preview -->
     <ImageView
         android:id="@+id/floorPlan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:layout_marginTop="16dp"
-        android:weightSum="4">
+        android:contentDescription="Floor Plan" />
 
-        <Button
-            android:id="@+id/floor1"
-            android:text="Floor 1"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/floor2"
-            android:text="Floor 2"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/floor3"
-            android:text="Floor 3"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/floor4"
-            android:text="Floor 4"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <!-- Hidden video player -->
+    <VideoView
+        android:id="@+id/floorVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 </LinearLayout>
