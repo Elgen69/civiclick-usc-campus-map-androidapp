@@ -1,19 +1,19 @@
 package com.example.civiclick;
 
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.VideoView;
-
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.chrisbanes.photoview.OnMatrixChangedListener;
 import com.github.chrisbanes.photoview.PhotoView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CampusMapActivity extends AppCompatActivity {
 
@@ -21,20 +21,17 @@ public class CampusMapActivity extends AppCompatActivity {
     private Button btnGo;
     private VideoView routeVideo;
     private PhotoView campusMap;
+    private ImageView markerBunzel, markerSafad;
+    private FrameLayout markerOverlay;
 
     private final String[] buildings = {
-            "SAFAD", "FR. LAWRENCE BUNZEL BUILDING", "LRC", "EDGAR OEHLER",
-            "SMED BUILDING", "ENRIQUE SHOEMAN", "PHILIP ENGELEN", "ROBERT HOEPPENER",
-            "MICHAEL RICHARTZ", "POPULATION OFFICE", "ALUMNI CENTER"
+            "SAFAD", "FR. LAWRENCE BUNZEL BUILDING"
     };
 
-    private final String[] markerIds = {
-            "markerSafad", "markerBunzel", "markerLrc", "markerOehler",
-            "markerSmed", "markerEnrique", "markerPhilip", "markerRobert",
-            "markerMichael", "markerPopulation", "markerAlumni"
-    };
-
-    private final ImageView[] markers = new ImageView[markerIds.length];
+    private final Map<String, String> buildingKeys = new HashMap<String, String>() {{
+        put("FR. LAWRENCE BUNZEL BUILDING", "bunzel");
+        put("SAFAD", "safad");
+    }};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,24 +43,10 @@ public class CampusMapActivity extends AppCompatActivity {
         btnGo = findViewById(R.id.btnGo);
         routeVideo = findViewById(R.id.routeVideo);
         campusMap = findViewById(R.id.campusMap);
+        markerOverlay = findViewById(R.id.markerOverlay);
 
-        for (int i = 0; i < markerIds.length; i++) {
-            int resId = getResources().getIdentifier(markerIds[i], "id", getPackageName());
-            markers[i] = findViewById(resId);
-            markers[i].setVisibility(View.GONE);
-
-            // Let all markers be clickable regardless of visibility
-            final String building = buildings[i];
-            markers[i].setOnClickListener(v -> {
-                if (building.equals("FR. LAWRENCE BUNZEL BUILDING")) {
-                    startActivity(new Intent(this, BunzelBuildingActivity.class));
-                } else {
-                    Toast.makeText(this, building + " clicked (no activity yet)", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-
-        routeVideo.setVisibility(View.GONE);
+        markerBunzel = findViewById(R.id.markerBunzel);
+        markerSafad = findViewById(R.id.markerSafad);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, buildings);
         fromInput.setAdapter(adapter);
@@ -75,42 +58,76 @@ public class CampusMapActivity extends AppCompatActivity {
             btnGo.setEnabled(true);
         });
 
-        btnGo.setOnClickListener(v -> {
-            String from = fromInput.getText().toString().trim();
-            String to = toInput.getText().toString().trim();
+        btnGo.setOnClickListener(v -> playRouteVideo());
 
-            if (from.equalsIgnoreCase(to)) {
-                Toast.makeText(this, "Cannot select the same building!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String videoName = from.toLowerCase().replace(" ", "_") + "_to_" + to.toLowerCase().replace(" ", "_");
-            int videoId = getResources().getIdentifier(videoName, "raw", getPackageName());
-
-            if (videoId != 0) {
-                routeVideo.setVisibility(View.VISIBLE);
-                routeVideo.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
-                routeVideo.setOnCompletionListener(mp -> routeVideo.setVisibility(View.GONE));
-                routeVideo.start();
-            } else {
-                Toast.makeText(this, "Video not found for path.", Toast.LENGTH_SHORT).show();
-            }
-
-            toInput.setText("");
-            btnGo.setEnabled(false);
+        markerBunzel.setOnClickListener(v -> {
+            Intent i = new Intent(this, BunzelBuildingActivity.class);
+            startActivity(i);
         });
+
+        // Sync marker scale with map zoom
+        campusMap.setOnMatrixChangeListener(new OnMatrixChangedListener() {
+            @Override
+            public void onMatrixChanged(RectF rect) {
+                float[] values = new float[9];
+                Matrix matrix = campusMap.getImageMatrix();
+                matrix.getValues(values);
+                float scale = values[Matrix.MSCALE_X];
+
+                markerBunzel.setScaleX(scale);
+                markerBunzel.setScaleY(scale);
+                markerSafad.setScaleX(scale);
+                markerSafad.setScaleY(scale);
+            }
+        });
+
+        routeVideo.setVisibility(View.GONE);
     }
 
     private void updateMarkers() {
         String from = fromInput.getText().toString();
         String to = toInput.getText().toString();
 
-        for (int i = 0; i < buildings.length; i++) {
-            boolean show = buildings[i].equalsIgnoreCase(from) || buildings[i].equalsIgnoreCase(to);
-            if (markers[i] != null) {
-                markers[i].setVisibility(show ? View.VISIBLE : View.GONE);
-            }
+        markerBunzel.setVisibility(
+                from.equalsIgnoreCase("FR. LAWRENCE BUNZEL BUILDING") || to.equalsIgnoreCase("FR. LAWRENCE BUNZEL BUILDING")
+                        ? View.VISIBLE : View.GONE);
+
+        markerSafad.setVisibility(
+                from.equalsIgnoreCase("SAFAD") || to.equalsIgnoreCase("SAFAD")
+                        ? View.VISIBLE : View.GONE);
+    }
+
+    private void playRouteVideo() {
+        String from = fromInput.getText().toString().trim();
+        String to = toInput.getText().toString().trim();
+
+        if (from.equalsIgnoreCase(to)) {
+            Toast.makeText(this, "Cannot select the same building!", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        String fromKey = buildingKeys.getOrDefault(from.toUpperCase(), "");
+        String toKey = buildingKeys.getOrDefault(to.toUpperCase(), "");
+
+        if (fromKey.isEmpty() || toKey.isEmpty()) {
+            Toast.makeText(this, "Invalid route selected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String videoName = fromKey + "_to_" + toKey;
+        int videoId = getResources().getIdentifier(videoName, "raw", getPackageName());
+
+        if (videoId != 0) {
+            routeVideo.setVisibility(View.VISIBLE);
+            routeVideo.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
+            routeVideo.setOnCompletionListener(mp -> routeVideo.setVisibility(View.GONE));
+            routeVideo.start();
+        } else {
+            Toast.makeText(this, "Video not found", Toast.LENGTH_SHORT).show();
+        }
+
+        toInput.setText("");
+        btnGo.setEnabled(false);
     }
 
     @Override
