@@ -2,24 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#121212"
-    android:padding="16dp"
+    android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BunzelBuildingActivity">
 
-    <!-- Entrance Image Preview -->
+    <!-- Entrance Preview (Smaller) -->
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/rounded_box"
-        android:layout_marginBottom="12dp">
+        android:layout_height="140dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_box">
+
         <ImageView
             android:id="@+id/floorEntranceImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/bunzel_entrance"
-            android:contentDescription="Entrance" />
+            android:contentDescription="Entrance"
+            android:src="@drawable/bunzel_entrance" />
     </FrameLayout>
 
     <!-- Title -->
@@ -29,25 +30,57 @@
         android:layout_height="wrap_content"
         android:text="Select a floor"
         android:textColor="#FFFFFF"
+        android:textSize="16sp"
         android:textAlignment="center"
-        android:textSize="18sp"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="4dp" />
 
-    <!-- Floor Buttons -->
+    <!-- Inline Room Search -->
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/floorRoomInput"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Search for a room"
+            android:background="@drawable/rounded_box"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAAAAA"
+            android:textSize="14sp"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/btnSearchRoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔍"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Search Room"
+            android:textSize="16sp"
+            style="@style/NeonButton" />
+    </LinearLayout>
+
+    <!-- Floor Select Buttons -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:weightSum="5"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        android:weightSum="5">
 
         <Button
             android:id="@+id/btnBasement"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Basement"
+            android:text="BASEMENT"
+            android:textSize="12sp"
             style="@style/NeonButton" />
 
         <Button
@@ -55,7 +88,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Floor 1"
+            android:text="FLOOR 1"
+            android:textSize="12sp"
             style="@style/NeonButton" />
 
         <Button
@@ -63,7 +97,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Floor 2"
+            android:text="FLOOR 2"
+            android:textSize="12sp"
             style="@style/NeonButton" />
 
         <Button
@@ -71,7 +106,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Floor 3"
+            android:text="FLOOR 3"
+            android:textSize="12sp"
             style="@style/NeonButton" />
 
         <Button
@@ -79,42 +115,25 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Floor 4"
+            android:text="FLOOR 4"
+            android:textSize="12sp"
             style="@style/NeonButton" />
     </LinearLayout>
 
-    <!-- Room search for selected floor -->
-    <AutoCompleteTextView
-        android:id="@+id/floorRoomInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Select room on this floor"
-        android:background="@drawable/rounded_box"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#AAAAAA"
-        android:padding="12dp"
-        android:layout_marginBottom="8dp" />
-
-    <Button
-        android:id="@+id/btnSearchRoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"
-        style="@style/NeonButton" />
-
-    <!-- Floor image preview -->
+    <!-- Floor Plan (Main Area) -->
     <ImageView
         android:id="@+id/floorPlan"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:adjustViewBounds="true"
-        android:layout_marginTop="16dp"
         android:contentDescription="Floor Plan" />
 
-    <!-- Hidden video player -->
+    <!-- Room Route Video -->
     <VideoView
         android:id="@+id/floorVideo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:visibility="gone" />
 </LinearLayout>
