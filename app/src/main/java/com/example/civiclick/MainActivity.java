@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    Button btnMap, btnCredits;
+    Button btnMap, btnCredits, btnAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +20,21 @@ public class MainActivity extends AppCompatActivity {
 
         btnMap = findViewById(R.id.btnMap);
         btnCredits = findViewById(R.id.btnCredits);
+        btnAbout = findViewById(R.id.btnAbout);
 
         btnMap.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, CampusMapActivity.class);
             startActivity(i);
         });
 
-//        btnCredits.setOnClickListener(v -> {
-//            Intent i = new Intent(MainActivity.this, CreditsActivity.class);
-//            startActivity(i);
-//        });
+        btnCredits.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, CreditsActivity.class);
+            startActivity(i);
+        });
+
+        btnAbout.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(i);
+        });
     }
 }
