@@ -19,5 +19,12 @@
     <string name="lrc_marker">LRC Marker</string>
     <string name="edgar_oehler_marker">Edgar Oehler Marker</string>
     <string name="enrique_marker">Enrique Marker</string>
+    <string name="campus_map">Campus Map</string>
+    <string name="philip_marker">Philip Marker</string>
+    <string name="go">GO</string>
+    <string name="from_building">From Building</string>
+    <string name="to_building">To Building</string>
+    <string name="michael_marker">Michael Marker</string>
+    <string name="search_and_tap_the_markers_to_navigate_buildings">Search and tap the markers to navigate buildings.</string>
 
 </resources>

@@ -1,221 +1,208 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/campusMapContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#121212"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".CampusMapActivity">
 
+    <!-- Dropdown Inputs -->
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="12dp">
 
-        <!-- Top Row -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <AutoCompleteTextView
+            android:id="@+id/fromInput"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:orientation="horizontal">
+            android:hint="@string/from_building"
+            android:background="@drawable/rounded_box"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#BBBBBB"
+            android:padding="12dp" />
 
-            <AutoCompleteTextView
-                android:id="@+id/fromInput"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:hint="From Building"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#BBBBBB"
-                android:background="@drawable/rounded_box"
-                android:padding="12dp" />
+        <AutoCompleteTextView
+            android:id="@+id/toInput"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="@string/to_building"
+            android:background="@drawable/rounded_box"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#BBBBBB"
+            android:padding="12dp" />
 
-            <AutoCompleteTextView
-                android:id="@+id/toInput"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:layout_height="wrap_content"
-                android:hint="To Building"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#BBBBBB"
-                android:background="@drawable/rounded_box"
-                android:padding="12dp" />
+        <Button
+            android:id="@+id/btnGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/go"
+            android:contentDescription="Go"
+            style="@style/NeonButton"
+            tools:ignore="HardcodedText,SpeakableTextPresent" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/btnGo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:enabled="false"
-                android:text="Go"
-                android:contentDescription="Go Button"
-                style="@style/NeonButton"
-                tools:ignore="SpeakableTextPresent" />
-        </LinearLayout>
+    <!-- Scrollable Map Layout -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-        <!-- Zoomable Map + Overlay -->
         <FrameLayout
-            android:id="@+id/mapWrapper"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:id="@+id/mapContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/black">
 
-            <!-- USC Map -->
-            <com.github.chrisbanes.photoview.PhotoView
+            <!-- Static Map -->
+            <ImageView
                 android:id="@+id/campusMap"
-                android:layout_width="match_parent"
+                android:layout_width="1000dp"
                 android:layout_height="match_parent"
+                android:src="@drawable/usc_map"
                 android:scaleType="fitCenter"
-                android:src="@drawable/usc_map" />
-
-            <!-- Markers Layer -->
-            <FrameLayout
-                android:id="@+id/markerOverlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="top|start">
-
-                <ImageView
-                    android:id="@+id/markerBunzel"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="350dp"
-                    android:layout_marginStart="40dp"
-                    android:src="@drawable/location_pin"
-                    android:contentDescription="Marker Bunzel"
-                    android:visibility="visible" />
-
-                <ImageView
-                    android:id="@+id/markerSafad"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="200dp"
-                    android:layout_marginStart="160dp"
-                    android:src="@drawable/location_pin"
-                    android:contentDescription="Marker SAFAD"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerLrc"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="280dp"
-                    android:layout_marginTop="210dp"
-                    android:contentDescription="@string/lrc_marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerOehler"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="180dp"
-                    android:layout_marginTop="280dp"
-                    android:contentDescription="@string/edgar_oehler_marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerSmed"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="200dp"
-                    android:layout_marginTop="280dp"
-                    android:contentDescription="SMED Marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerEnrique"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="130dp"
-                    android:layout_marginTop="300dp"
-                    android:contentDescription="@string/enrique_marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerPhilip"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="240dp"
-                    android:layout_marginTop="290dp"
-                    android:contentDescription="Philip Marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerRobert"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="280dp"
-                    android:layout_marginTop="280dp"
-                    android:contentDescription="Robert Marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerMichael"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="219dp"
-                    android:layout_marginTop="170dp"
-                    android:contentDescription="Michael Marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/markerPopulation"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="80dp"
-                    android:layout_marginTop="250dp"
-                    android:contentDescription="Population Marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone"
-                    tools:ignore="HardcodedText" />
-
-                <ImageView
-                    android:id="@+id/markerAlumni"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="72dp"
-                    android:layout_marginTop="370dp"
-                    android:contentDescription="Alumni Marker"
-                    android:src="@drawable/location_pin"
-                    android:visibility="gone"
-                    tools:ignore="HardcodedText" />
-            </FrameLayout>
-
-            <!-- Video -->
+                android:contentDescription="@string/campus_map" />
+            <!-- Video Overlay -->
             <VideoView
                 android:id="@+id/routeVideo"
-                android:layout_width="match_parent"
+                android:layout_width="1000dp"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
-        </FrameLayout>
 
-        <!-- Footer -->
-        <TextView
-            android:id="@+id/mapFooterNote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Zoom and tap markers to navigate buildings."
-            android:textColor="#BBBBBB"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp" />
-    </LinearLayout>
-</FrameLayout>
+            <!-- Example Markers -->
+            <ImageView
+                android:id="@+id/markerBunzel"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="240dp"
+                android:layout_marginStart="120dp"
+                android:layout_gravity="top|start"
+                android:visibility="gone"
+                android:src="@drawable/location_pin"
+                android:contentDescription="Bunzel Marker"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/markerSafad"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginStart="390dp"
+                android:layout_gravity="top|start"
+                android:visibility="gone"
+                android:src="@drawable/location_pin"
+                android:contentDescription="Safad Marker"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/markerLrc"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="720dp"
+                android:layout_marginTop="110dp"
+                android:contentDescription="@string/lrc_marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/markerOehler"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="460dp"
+                android:layout_marginTop="300dp"
+                android:contentDescription="@string/edgar_oehler_marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/markerSmed"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="510dp"
+                android:layout_marginTop="280dp"
+                android:contentDescription="SMED Marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/markerEnrique"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="350dp"
+                android:layout_marginTop="350dp"
+                android:contentDescription="@string/enrique_marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/markerPhilip"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="620dp"
+                android:layout_marginTop="310dp"
+                android:contentDescription="@string/philip_marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/markerRobert"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="700dp"
+                android:layout_marginTop="290dp"
+                android:contentDescription="Robert Marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/markerMichael"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="560dp"
+                android:layout_marginTop="35dp"
+                android:contentDescription="@string/michael_marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/markerPopulation"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="top|start"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="220dp"
+                android:contentDescription="Population Marker"
+                android:src="@drawable/location_pin"
+                android:visibility="gone"
+                tools:ignore="HardcodedText" />
+        </FrameLayout>
+    </HorizontalScrollView>
+
+    <!-- Footer -->
+    <TextView
+        android:id="@+id/mapFooterNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_and_tap_the_markers_to_navigate_buildings"
+        android:textColor="#BBBBBB"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp" />
+</LinearLayout>
