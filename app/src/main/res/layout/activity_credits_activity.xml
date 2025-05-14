@@ -84,7 +84,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Project Lead"
+                    android:text="Media Content Coordinator Lead"
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins"
                     android:textColor="#CCCCCC"
@@ -107,7 +107,7 @@
                 android:layout_height="64dp"
                 android:layout_marginEnd="16dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user" />
+                android:src="@drawable/elgen_profile" />
 
             <LinearLayout
                 android:layout_width="0dp"

@@ -28,45 +28,42 @@ public class BunzelBuildingActivity extends AppCompatActivity {
         btnSearchRoom = findViewById(R.id.btnSearchRoom);
         floorVideo = findViewById(R.id.floorVideo);
 
-        findViewById(R.id.btnBasement).setOnClickListener(v -> loadFloor("basement", R.drawable.basement));
-        findViewById(R.id.btnFloor1).setOnClickListener(v -> loadFloor("floor1", R.drawable.bunzel_floor1));
-        findViewById(R.id.btnFloor2).setOnClickListener(v -> loadFloor("floor2", R.drawable.bunzel_floor2));
-        findViewById(R.id.btnFloor3).setOnClickListener(v -> loadFloor("floor3", R.drawable.bunzel_floor3));
-        findViewById(R.id.btnFloor4).setOnClickListener(v -> loadFloor("floor4", R.drawable.bunzel_floor4));
+        // Default bunzel building shown
+        floorEntranceImage.setImageResource(R.drawable.bunzel_building);
+
+        findViewById(R.id.btnBasement).setOnClickListener(v -> loadFloor("basement", R.drawable.basement, R.drawable.b_basement));
+        findViewById(R.id.btnFloor1).setOnClickListener(v -> loadFloor("floor1", R.drawable.bunzel_floor1, R.drawable.b_first_floor));
+        findViewById(R.id.btnFloor2).setOnClickListener(v -> loadFloor("floor2", R.drawable.bunzel_floor2, R.drawable.b_second_floor));
+        findViewById(R.id.btnFloor3).setOnClickListener(v -> loadFloor("floor3", R.drawable.bunzel_floor3, R.drawable.b_third_floor));
+        findViewById(R.id.btnFloor4).setOnClickListener(v -> loadFloor("floor4", R.drawable.bunzel_floor4, R.drawable.b_fourth_floor_front));
 
         btnSearchRoom.setOnClickListener(v -> {
-            String room = floorRoomInput.getText().toString().trim().replace(" ", "_").toLowerCase();
-            String videoName;
+            String input = floorRoomInput.getText().toString().trim().toLowerCase().replace(" ", "_");
 
-            // If starts with digit (0-9), prepend "room_"
-            if (room.matches("^[0-9].*")) {
-                videoName = "room_" + room;
-            } else {
-                videoName = room;
+            if (input.isEmpty()) {
+                Toast.makeText(this, "Please enter a room", Toast.LENGTH_SHORT).show();
+                return;
             }
 
+            String videoName = input.matches("\\d+") ? "room_" + input : input;
             int videoId = getResources().getIdentifier(videoName, "raw", getPackageName());
 
             if (videoId != 0) {
+                floorVideo.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
+                floorVideo.setOnPreparedListener(mp -> mp.setLooping(true));
+                floorVideo.start();
                 floorVideo.setVisibility(View.VISIBLE);
                 floorPlan.setVisibility(View.GONE);
-
-                floorVideo.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
-                floorVideo.setOnCompletionListener(mp -> {
-                    floorVideo.setVisibility(View.GONE);
-                    floorPlan.setVisibility(View.VISIBLE);
-                });
-                floorVideo.start();
             } else {
-                Toast.makeText(this, "No video found for this room.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No animation available for: " + input, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadFloor(String floorKey, int floorResId) {
+    private void loadFloor(String floorKey, int floorResId, int entranceResId) {
         currentFloor = floorKey;
         floorTitle.setText("Selected: " + floorKey.replace("_", " ").toUpperCase());
-        floorEntranceImage.setImageResource(R.drawable.bunzel_entrance);
+        floorEntranceImage.setImageResource(entranceResId);
         floorPlan.setImageResource(floorResId);
         floorPlan.setVisibility(View.VISIBLE);
         floorVideo.setVisibility(View.GONE);
@@ -80,17 +77,51 @@ public class BunzelBuildingActivity extends AppCompatActivity {
     private String[] getRoomsForFloor(String floor) {
         switch (floor) {
             case "floor4":
-                return new String[]{"443", "444", "445", "446", "447", "448", "467", "468", "469", "470", "480", "481", "482", "483", "484", "485", "486", "fac_office", "dept_office", "control_room"};
+                return new String[]{
+                        "443", "444", "445", "446", "447", "448",
+                        "467", "468", "469", "470", "480", "481",
+                        "483", "484", "485", "486",
+                        "fac_office", "dept_office", "control_room",
+                        "techhub", "treasury_office"
+                };
             case "floor3":
-                return new String[]{"301", "302", "303", "304", "305", "306", "363", "364", "365", "366", "ee_lab", "water_laboratory", "d_eng_room", "tech_hub_office"};
+                return new String[]{
+                        "301", "302", "303", "304", "305", "306",
+                        "342", "363", "364", "365", "366",
+                        "ncr_design_lab", "pcb_lab", "rigney_hall",
+                        "robotics_automation", "techhub_office"
+                };
             case "floor2":
-                return new String[]{"264", "265", "266", "267", "245", "246", "247", "248", "cpe_dept_office", "ceactc_office"};
+                return new String[]{
+                        "245", "246", "247", "248", "264", "265", "266", "267",
+                        "chemeng_department", "csst_office", "cpe_dept_office",
+                        "ceactc_office", "dml_office", "deng_room"
+                };
             case "floor1":
-                return new String[]{"143", "144", "146", "167", "168", "172", "cashier", "internal_audit", "rigney_hall", "controller_office"};
+                return new String[]{
+                        "143", "144", "146", "167", "168", "172",
+                        "285", "286", "cashier", "internal_audit",
+                        "rigney_hall", "controller_office", "lbch1", "lbch2"
+                };
             case "basement":
-                return new String[]{"osfa", "cdc_office", "cdc_testing", "medical_clinic", "dental_clinic", "textbook_section", "cr", "id_room", "oss"};
+                return new String[]{
+                        "osfa", "cdc_office", "cdc_testing", "medical_clinic",
+                        "dental_clinic", "textbook_section", "id_room", "oss",
+                        "authorized", "main_door_tech"
+                };
             default:
                 return new String[]{};
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (floorVideo.getVisibility() == View.VISIBLE) {
+            floorVideo.stopPlayback();
+            floorVideo.setVisibility(View.GONE);
+            floorPlan.setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
         }
     }
 }

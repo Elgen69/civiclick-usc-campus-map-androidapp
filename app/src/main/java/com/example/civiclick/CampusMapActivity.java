@@ -1,16 +1,11 @@
 package com.example.civiclick;
 
 import android.content.Intent;
-import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.chrisbanes.photoview.OnMatrixChangedListener;
-import com.github.chrisbanes.photoview.PhotoView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,17 +15,28 @@ public class CampusMapActivity extends AppCompatActivity {
     private AutoCompleteTextView fromInput, toInput;
     private Button btnGo;
     private VideoView routeVideo;
-    private PhotoView campusMap;
-    private ImageView markerBunzel, markerSafad;
-    private FrameLayout markerOverlay;
+    private ImageView campusMap;
+
+    private ImageView markerBunzel, markerSafad, markerLrc, markerOehler, markerEnrique,
+            markerMain, markerPhilip, markerRobert, markerMichael, markerSmed;
 
     private final String[] buildings = {
-            "SAFAD", "FR. LAWRENCE BUNZEL BUILDING"
+            "SAFAD", "FR. LAWRENCE BUNZEL BUILDING",
+            "LRC", "EDGAR OEHLER", "ENRIQUE", "POPULATION", "PHILIP",
+            "ROBERT", "MICHAEL", "SMED", "ALUMNI"
     };
 
     private final Map<String, String> buildingKeys = new HashMap<String, String>() {{
         put("FR. LAWRENCE BUNZEL BUILDING", "bunzel");
         put("SAFAD", "safad");
+        put("LRC", "lrc");
+        put("EDGAR OEHLER", "oehler");
+        put("ENRIQUE", "enrique");
+        put("POPULATION", "population");
+        put("PHILIP", "philip");
+        put("ROBERT", "robert");
+        put("MICHAEL", "michael");
+        put("SMED", "smed");
     }};
 
     @Override
@@ -43,10 +49,17 @@ public class CampusMapActivity extends AppCompatActivity {
         btnGo = findViewById(R.id.btnGo);
         routeVideo = findViewById(R.id.routeVideo);
         campusMap = findViewById(R.id.campusMap);
-        markerOverlay = findViewById(R.id.markerOverlay);
 
         markerBunzel = findViewById(R.id.markerBunzel);
         markerSafad = findViewById(R.id.markerSafad);
+        markerLrc = findViewById(R.id.markerLrc);
+        markerOehler = findViewById(R.id.markerOehler);
+        markerEnrique = findViewById(R.id.markerEnrique);
+        markerMain = findViewById(R.id.markerPopulation);
+        markerPhilip = findViewById(R.id.markerPhilip);
+        markerRobert = findViewById(R.id.markerRobert);
+        markerMichael = findViewById(R.id.markerMichael);
+        markerSmed = findViewById(R.id.markerSmed);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, buildings);
         fromInput.setAdapter(adapter);
@@ -60,41 +73,51 @@ public class CampusMapActivity extends AppCompatActivity {
 
         btnGo.setOnClickListener(v -> playRouteVideo());
 
+        // MARKER BEHAVIOR
         markerBunzel.setOnClickListener(v -> {
             Intent i = new Intent(this, BunzelBuildingActivity.class);
             startActivity(i);
         });
 
-        // Sync marker scale with map zoom
-        campusMap.setOnMatrixChangeListener(new OnMatrixChangedListener() {
-            @Override
-            public void onMatrixChanged(RectF rect) {
-                float[] values = new float[9];
-                Matrix matrix = campusMap.getImageMatrix();
-                matrix.getValues(values);
-                float scale = values[Matrix.MSCALE_X];
-
-                markerBunzel.setScaleX(scale);
-                markerBunzel.setScaleY(scale);
-                markerSafad.setScaleX(scale);
-                markerSafad.setScaleY(scale);
-            }
-        });
+        markerSafad.setOnClickListener(v -> showUnavailableToast());
+        markerLrc.setOnClickListener(v -> showUnavailableToast());
+        markerOehler.setOnClickListener(v -> showUnavailableToast());
+        markerEnrique.setOnClickListener(v -> showUnavailableToast());
+        markerMain.setOnClickListener(v -> showUnavailableToast());
+        markerPhilip.setOnClickListener(v -> showUnavailableToast());
+        markerRobert.setOnClickListener(v -> showUnavailableToast());
+        markerMichael.setOnClickListener(v -> showUnavailableToast());
+        markerSmed.setOnClickListener(v -> showUnavailableToast());
 
         routeVideo.setVisibility(View.GONE);
     }
 
+    private void showUnavailableToast() {
+        Toast.makeText(this, "No floor plans/navigation available yet for this building.", Toast.LENGTH_SHORT).show();
+    }
+
     private void updateMarkers() {
-        String from = fromInput.getText().toString();
-        String to = toInput.getText().toString();
+        String from = fromInput.getText().toString().trim().toUpperCase();
+        String to = toInput.getText().toString().trim().toUpperCase();
 
-        markerBunzel.setVisibility(
-                from.equalsIgnoreCase("FR. LAWRENCE BUNZEL BUILDING") || to.equalsIgnoreCase("FR. LAWRENCE BUNZEL BUILDING")
-                        ? View.VISIBLE : View.GONE);
+        setMarkerVisibility(markerBunzel, from, to, "FR. LAWRENCE BUNZEL BUILDING");
+        setMarkerVisibility(markerSafad, from, to, "SAFAD");
+        setMarkerVisibility(markerLrc, from, to, "LRC");
+        setMarkerVisibility(markerOehler, from, to, "EDGAR OEHLER");
+        setMarkerVisibility(markerEnrique, from, to, "ENRIQUE");
+        setMarkerVisibility(markerMain, from, to, "POPULATION");
+        setMarkerVisibility(markerPhilip, from, to, "PHILIP");
+        setMarkerVisibility(markerRobert, from, to, "ROBERT");
+        setMarkerVisibility(markerMichael, from, to, "MICHAEL");
+        setMarkerVisibility(markerSmed, from, to, "SMED");
+    }
 
-        markerSafad.setVisibility(
-                from.equalsIgnoreCase("SAFAD") || to.equalsIgnoreCase("SAFAD")
-                        ? View.VISIBLE : View.GONE);
+    private void setMarkerVisibility(ImageView marker, String from, String to, String name) {
+        if (from.equals(name) || to.equals(name)) {
+            marker.setVisibility(View.VISIBLE);
+        } else {
+            marker.setVisibility(View.GONE);
+        }
     }
 
     private void playRouteVideo() {
@@ -118,10 +141,13 @@ public class CampusMapActivity extends AppCompatActivity {
         int videoId = getResources().getIdentifier(videoName, "raw", getPackageName());
 
         if (videoId != 0) {
-            routeVideo.setVisibility(View.VISIBLE);
             routeVideo.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videoId));
-            routeVideo.setOnCompletionListener(mp -> routeVideo.setVisibility(View.GONE));
+            routeVideo.setOnPreparedListener(mp -> mp.setLooping(true));
             routeVideo.start();
+
+            // Keep campusMap visible to retain marker overlays
+            routeVideo.setVisibility(View.VISIBLE);
+            // campusMap stays visible
         } else {
             Toast.makeText(this, "Video not found", Toast.LENGTH_SHORT).show();
         }
@@ -135,6 +161,7 @@ public class CampusMapActivity extends AppCompatActivity {
         if (routeVideo.getVisibility() == View.VISIBLE) {
             routeVideo.stopPlayback();
             routeVideo.setVisibility(View.GONE);
+            campusMap.setVisibility(View.VISIBLE); // just in case
         } else {
             super.onBackPressed();
         }
