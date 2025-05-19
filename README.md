@@ -69,29 +69,35 @@ Or clone the project and run it in Android Studio:
 ```bash
 git clone https://github.com/your-username/civiclick-campusnavigation.git
 
-<h2>🤝 Contributing</h2>
-<p>We welcome collaboration!</p>
+## 🤝 Contributing
 
-<p>If you're from USC and want to help map additional buildings, contribute video animations, or expand the backend:</p>
-<ul>
-  <li>Fork the repo</li>
-  <li>Create a feature branch</li>
-  <li>Submit a pull request</li>
-  <li>Or simply open an issue with your suggestions</li>
-</ul>
+We welcome collaboration!
 
-<p><strong>Note:</strong> Room naming conventions, video file formats, and marker positioning follow internal standards (see <code>CONTRIBUTING.md</code> — coming soon).</p>
+If you're from USC and want to help map additional buildings, contribute video animations, or expand the backend:
 
-<h2>📄 License</h2>
-<p>This project is under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>.<br>
-You’re free to use, adapt, or fork — with credit.</p>
+- Fork the repo  
+- Create a feature branch  
+- Submit a pull request  
+- Or simply open an issue with your suggestions  
 
-<h2>📣 Acknowledgments</h2>
-<ul>
-  <li>USC-TC Students & Professors</li>
-  <li>The Mobile Development Class of 2025</li>
-  <li>Expo Showcase Evaluators</li>
-  <li>Everyone who tested, pitched, or invested feedback into <strong>CiviClick</strong></li>
-</ul>
+> **Note:** Room naming conventions, video file formats, and marker positioning follow internal standards (see `CONTRIBUTING.md` — coming soon).
 
-<p><strong>CiviClick — built for students, by students.</strong></p>
+---
+
+## 📄 License
+
+This project is under the [MIT License](https://opensource.org/licenses/MIT).  
+You’re free to use, adapt, or fork — with credit.
+
+---
+
+## 📣 Acknowledgments
+
+- USC-TC Students & Professors  
+- The Mobile Development Class of 2025  
+- Expo Showcase Evaluators  
+- Everyone who tested, pitched, or invested feedback into **CiviClick**
+
+---
+
+**CiviClick — built for students, by students.**
