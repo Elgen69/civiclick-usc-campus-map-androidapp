@@ -68,7 +68,7 @@ Or clone the project and run it in Android Studio:
 
 ```bash
 git clone https://github.com/your-username/civiclick-campusnavigation.git
-
+```
 ## 🤝 Contributing
 
 We welcome collaboration!
