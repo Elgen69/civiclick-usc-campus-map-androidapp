@@ -1,6 +1,6 @@
 # CiviClick – Campus Navigation App for Universities
 
-**CiviClick** is a mobile-first navigation app designed to help students, visitors, and staff efficiently explore complex university campuses. Originally developed for the **University of San Carlos – Talamban Campus (USC-TC)**, it provides a complete digital experience for navigating both outdoor campus maps and indoor building floorplans.
+**CiviClick** is a mobile-first navigation app designed to help students, visitors, and staff efficiently explore complex university campuses and buildings. Originally developed for the **University of San Carlos – Talamban Campus (USC-TC)**, it provides a complete digital experience for navigating both outdoor campus map, buildings and even indoor building floorplans.
 
 While currently focused on the **Bunzel Building**, the app is built on a modular structure that allows rapid expansion to other USC buildings (e.g., SAFAD, LRC, OEHLER) and, eventually, other universities.
 
