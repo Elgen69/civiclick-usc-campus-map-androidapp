@@ -99,5 +99,4 @@ You’re free to use, adapt, or fork — with credit.
 - Everyone who tested, pitched, or invested feedback into **CiviClick**
 
 ---
-
 **CiviClick — built for students, by students.**
